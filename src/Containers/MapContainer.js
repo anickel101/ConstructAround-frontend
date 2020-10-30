@@ -17,7 +17,12 @@ const mapContainerDims = {
 class MapContainer extends React.Component {
 
   state={
-    focus_marker: {}
+    focus_marker: {},
+    viewable_buildings: []
+  }
+
+  componentDidMount() {
+    this.setState({viewable_buildings: this.props.buildings})
   }
 
   _mapLoaded(mapProps, map) {
@@ -29,16 +34,21 @@ class MapContainer extends React.Component {
   }
 
   handleClick = (mapProps, map, event) => {
-    console.log("mapProps: ", mapProps)
-    console.log("map: ", map)
-    console.log("event: ", event)
-    console.log(event.latLng.lat())
     this.setState({
       focus_marker: {
         lat: event.latLng.lat(),
         lng: event.latLng.lng()
       }
     })
+  }
+
+  markerClick = (props, marker, event) => {
+  }
+
+  renderBuildings = () => {
+    if (this.state.viewable_buildings) {
+      return this.state.viewable_buildings.map(bldg => <Marker key={bldg.bin} position={{lat: bldg.gis_lat, lng: bldg.gis_long}} />)
+    }
   }
 
   render() {
@@ -48,12 +58,15 @@ class MapContainer extends React.Component {
         containerStyle={mapContainerDims}
         initialCenter={initialCenter}
         center={this.state.focus_marker}
-        zoom={16}
+        zoom={18}
         onReady={(mapProps, map) => this._mapLoaded(mapProps, map)}
         onClick={this.handleClick}
         >
 
-        <Marker position={{lat: this.state.focus_marker, lng: this.state.focus_marker}} />
+        <Marker onClick={this.markerClick} position={{lat: this.state.focus_marker.lat, lng: this.state.focus_marker.lng}} />
+
+        {this.renderBuildings()}
+
       </Map>
 
     );
