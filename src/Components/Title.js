@@ -1,14 +1,14 @@
 import React from 'react'
 
-class DataTest extends React.Component {
+class Title extends React.Component {
 
     render() {
         return (
             <div className="data-test">
-                <h1>Testing</h1>
+                <h2>ConstructAround</h2>
             </div>
         )
     }
 }
 
-export default DataTest
+export default Title

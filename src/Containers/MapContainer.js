@@ -7,8 +7,6 @@ const initialCenter = {
   lng: -73.983694
 }
 
-const libraries = ["places"]
-
 const mapContainerDims = {
   height: "100vh",
   width: "100vw"
@@ -21,28 +19,6 @@ class MapContainer extends React.Component {
     viewable_buildings: [],
     selected: null,
     center: {}
-  }
-
-  coordToString = (coord) => {
-    return coord.toString().replace(".", "")
-  }
-
-  getSearchedBuildings = () => {
-
-    let options = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    }
-
-    let searchLat = this.coordToString(this.state.center.lat)
-    let searchLng = this.coordToString(this.state.center.lng)
-
-    fetch(`http://localhost:3000/buildings/${searchLat}/${searchLng}/${this.props.range}`, options)
-    .then(resp => resp.json())
-    .then(data => console.log("Search Buildings: ", data))
-
   }
 
   componentDidMount() {
@@ -70,8 +46,15 @@ class MapContainer extends React.Component {
   }
 
   renderBuildings = () => {
-    if (this.state.viewable_buildings) {
-      return this.state.viewable_buildings.map(bldg => <Marker onClick={this.setSelected} key={bldg.bin} info={bldg} position={{lat: bldg.gis_lat, lng: bldg.gis_long}} />)
+    if (this.props.buildings) {
+      return this.props.buildings.map(bldg => <Marker onClick={this.setSelected} key={bldg.bin} info={bldg} position={{lat: bldg.gis_lat, lng: bldg.gis_long}} />)
+    }
+  }
+
+  renderSearchedBuildings = () => {
+    if (this.props.searched_buildings) {
+      return this.props.searched_buildings.map(bldg => <Marker onClick={this.setSelected} key={bldg.bin} info={bldg} position={{lat: bldg.gis_lat, lng: bldg.gis_long}} icon={{url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"}}
+      />)
     }
   }
 
@@ -79,7 +62,7 @@ class MapContainer extends React.Component {
     if (this.state.center.lat) {
       return (
         <Circle
-        radius={this.props.range/3.2804}
+        radius={this.props.range*1.27}
         center={this.state.center}
         onMouseover={() => console.log('mouseover')}
         onClick={() => console.log('click')}
@@ -95,7 +78,6 @@ class MapContainer extends React.Component {
   }
 
   renderSelectedToolTip = () => {
-    console.log("Inside renderSelected")
     return (
       <InfoWindow marker={this.state.selected} visible={true} onClose={this.clearSelected}>
         <div>
@@ -117,9 +99,6 @@ class MapContainer extends React.Component {
   }
 
   render() {
-    if (this.state.center.lat) {
-      this.getSearchedBuildings()
-    }
     return (
       <Map
         google={this.props.google}
@@ -135,8 +114,9 @@ class MapContainer extends React.Component {
 
         {this.renderSearchCircle()}
 
-
         {this.renderBuildings()}
+        {this.renderSearchedBuildings()}
+
         {this.state.selected ? (this.renderSelectedToolTip()) : null}
       </Map>
 

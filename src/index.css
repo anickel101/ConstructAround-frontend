@@ -15,10 +15,33 @@ code {
 
 .data-test {
   position: absolute;
-  color: white;
+  top: 1rem;
+  left: 1rem;
+  z-index: 20;
+  color: grey;
   padding-left: 25px;
 }
 
-/* .slider {
+.slider {
   position: absolute;
-} */
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 21;
+  color: white;
+}
+
+.searchbar {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 400px;
+  z-index: 10;
+}
+
+.searchbar input {
+  padding: 0.5rem;
+  font-size: 1.0rem;
+  width: 100%;
+}

@@ -11,13 +11,12 @@ const Slider = (props) => {
         <Form>
             <Form.Group>
             <Form.Label column sm="4">
-                Range (ft.)
+                Range (m)
             </Form.Label>
             <Col sm="8">
                 <RangeSlider
                 min={0}
-                max={3000}
-                step={100}
+                max={1000}
                 tooltipPlacement='top'
                 tooltip='auto'
                 value={value}
