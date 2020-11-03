@@ -48,7 +48,7 @@ class App extends Component {
     let searchLat = this.coordToString(this.state.center.lat)
     let searchLng = this.coordToString(this.state.center.lng)
 
-    // BUG: need to make sure center lat/long are 6 decimals
+    // BUG: need to make sure center lat/long are 6 decimalsm per NYC data
     console.log(`http://localhost:3000/buildings/${searchLat}/${searchLng}/${newRange}`)
 
     fetch(`http://localhost:3000/buildings/${searchLat}/${searchLng}/${newRange}`, options)
@@ -71,8 +71,6 @@ class App extends Component {
 
     let choppedLat = newLat.toFixed(6)
     let choppedLng = newLng.toFixed(6)
-
-    console.log(choppedLng)
 
     let searchLat = String(choppedLat.replace(".", ""))
     let searchLng = String(choppedLng.replace(".", ""))
@@ -98,16 +96,12 @@ class App extends Component {
   render() {
     return (
       <div>
-        <LoadScript
-          googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-          libraries={libraries}
-        >
+        {/* <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY} libraries={libraries}> */}
           <Title />
           <SearchBar center={this.state.center} updateCenter={this.updateCenter} search={this.search}/>
           <Slider range={this.state.range} updateRange={this.updateRange} />
-
           <Map buildings={this.state.buildings} range={this.state.range} center={this.state.center} />
-        </LoadScript>
+        {/* </LoadScript> */}
       </div>
 
     );
@@ -115,67 +109,3 @@ class App extends Component {
 }
 
 export default App;
-
-
-  // state = {
-  //   all_buildings: [],
-  //   searched_buildings: [],
-  //   center: {  
-  //     lat: 40.665889,
-  //     lng: -73.983694
-  //   },
-  //   range: 500
-  // }
-
-  // componentDidMount() {
-  //   this.getBuildings()
-  // }
-
-
-
-  // getSearchedBuildings = () => {
-  //   let options = {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json'
-  //     }
-  //   }
-
-  //   let searchLat = this.coordToString(this.state.center.lat)
-  //   let searchLng = this.coordToString(this.state.center.lng)
-
-  //   fetch(`http://localhost:3000/buildings/${searchLat}/${searchLng}/${this.state.range}`, options)
-  //   .then(resp => resp.json())
-  //   .then(data => {
-  //     console.log("Search Buildings: ", data)
-  //     this.setState({searched_buildings: data})
-  //   })
-
-  // }
-
-  // coordToString = (coord) => {
-  //   return coord.toString().replace(".", "")
-  // }
-
-  // updateRange = (newRange) => {
-  //   console.log(newRange)
-  //   let options = {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json'
-  //     }
-  //   }
-
-  //   let searchLat = this.coordToString(this.state.center.lat)
-  //   let searchLng = this.coordToString(this.state.center.lng)
-
-  //   fetch(`http://localhost:3000/buildings/${searchLat}/${searchLng}/${newRange}`, options)
-  //   .then(resp => resp.json())
-  //   .then(data => {
-  //     console.log("Search Buildings: ", data)
-  //     this.setState({
-  //       searched_buildings: data,
-  //       range: newRange
-  //     })
-  //   })
-  // }
