@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "bootstrap": "^4.5.3",
     "google-maps-react": "^2.0.6",
+    "pluralize": "^8.0.0",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
     "react-bootstrap-range-slider": "^2.0.2",

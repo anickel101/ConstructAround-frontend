@@ -1,14 +1,19 @@
 import React from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css';
+// import { Card, Button} from 'react-bootstrap';
+// import { Link } from 'react-router-dom';
+import '../App.css';
+import BuildingCard from './BuildingCard'
 
-class Building extends React.Component {
+class BuildingShow extends React.Component {
 
     render() {
         return (
-            <div className="building">
-                <h2>Building Info Goes Here</h2>
+            <div className="building-show">
+                <BuildingCard building={this.props.building}/>
             </div>
         )
     }
 }
 
-export default Building
+export default BuildingShow

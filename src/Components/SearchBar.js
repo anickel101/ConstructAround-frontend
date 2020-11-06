@@ -4,12 +4,10 @@ import {
     Combobox,
     ComboboxInput,
     ComboboxPopover,
-    ComboboxList,
     ComboboxOption,
-    ComboboxOptionText,
   } from "@reach/combobox";
   import "@reach/combobox/styles.css";
-import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
+import usePlacesAutocomplete, { getDetails, getGeocode, getLatLng } from "use-places-autocomplete";
 
 function SearchBar(props) {
 
@@ -23,13 +21,9 @@ function SearchBar(props) {
     const handleSubmit = async (e) => {
         if (e.key === "Enter") {
             try {
-                console.log(e.target.value)
                 const address = e.target.value
                 const results = await getGeocode({address})
-                const {lat, lng} = await getLatLng(results[0])
-
-                console.log(lat, lng)
-            
+                const {lat, lng} = await getLatLng(results[0])  
                 props.updateCenter(lat, lng)
             } catch(error) {
                 console.log("uh oh - error in submit")
@@ -37,10 +31,24 @@ function SearchBar(props) {
         }
     }
 
+    // const getStreetView = (address) => {
+
+    //     let size = "600x400"
+    //     let key = process.env.REACT_APP_GOOGLE_API_KEY
+
+    //     return `http://localhost:3000/buildings/size/${size}/location/${address}/key/${key}`
+    // }
+
     const handleSelect = async (e) => {
         try {
             const address = e
+            // const streetView = getStreetView(address)
             const results = await getGeocode({address})
+            const place_id = results[0].place_id
+            const details = await getDetails(place_id)
+            console.log("Address: ", address)
+            console.log("Results[0]:", results[0])
+            console.log("Details: ", details)
             const {lat, lng} = await getLatLng(results[0])
             setValue(e, false)
             clearSuggestions()
@@ -49,12 +57,11 @@ function SearchBar(props) {
             console.log("uh oh - error in search")
         }
     }
+    
 
     const handleChange = (e) => {
         setValue(e.target.value)
     }
-
-
 
     return (
         <div className="searchbar">

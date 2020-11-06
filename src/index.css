@@ -45,3 +45,25 @@ code {
   font-size: 1.0rem;
   width: 100%;
 }
+
+.building-show {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 24;
+}
+
+.building-mini {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 24;
+}
+
+.project-container {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 24;
+}
+
