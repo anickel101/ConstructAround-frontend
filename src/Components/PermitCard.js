@@ -4,36 +4,37 @@ import { Card, Button, Container, Row, Col} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import '../App.css';
 
-class ProjectCard extends React.Component {
+class PermitCard extends React.Component {
 
     render() {
         return (
-            <Card className="project-card pb-2" style={{ width: '15rem' }}>
+            <Card className="permit-card pb-2" style={{ width: '15rem' }}>
                 <Card.Body>
-                    <Card.Title>Job Number: {this.props.project.job_num}</Card.Title>
+                    <Card.Title>Permit Number: {this.props.permit.sign_number}</Card.Title>
                     <Card.Text className="mb-2 text-muted">
                         <Container>
                             <Row>
                                 <Col>
-                                    Job Type: {this.props.project.job_type}
+                                    Status: {this.props.permit.permit_status}
+                                </Col>
+                                <Col>
+                                    Work Type: {this.props.permit.work_type}
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
-                                    Job Description: {this.props.project.job_description ? this.props.project.job_description : "N/A"}
+                                    Issued: {this.props.permit.issued_date}
+                                </Col>
+                                <Col>
+                                    Expires: {this.props.permit.expiration_date}
                                 </Col>
                             </Row>
                         </Container>
                     </Card.Text>
-
-                    <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}`}>
-                        <Button className="ml-2" size="sm" variant="secondary">See More</Button>
-                    </Link>
-                        
                 </Card.Body>
             </Card>
         )
     }
 }
 
-export default ProjectCard
+export default PermitCard

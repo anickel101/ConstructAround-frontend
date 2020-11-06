@@ -7,13 +7,10 @@ import ProjectCard from '../Components/ProjectCard'
 class ProjectContainer extends React.Component {
 
     renderProjectCards = () => {
-        let cards = this.props.building.projects.map((project) => <ProjectCard key={project.id} project={project} />)
-        console.log(cards)
-        return cards
+        return this.props.building.projects.map((project) => <ProjectCard key={project.id} project={project} />)
     }
 
     render() {
-        console.log("In Project Container... ", this.props.building.projects)
         return (
             <div className="project-container">
                 <BuildingMini building={this.props.building}/>

@@ -45,7 +45,7 @@ code {
   font-size: 1.0rem;
   width: 100%;
 }
-
+/* 
 .building-show {
   position: absolute;
   top: 1rem;
@@ -61,6 +61,13 @@ code {
 }
 
 .project-container {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 24;
+} */
+
+.building-info {
   position: absolute;
   top: 1rem;
   right: 1rem;
