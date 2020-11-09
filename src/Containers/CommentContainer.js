@@ -1,31 +1,21 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import { Route, Switch } from 'react-router-dom';
-import { Card, CardGroup } from 'react-bootstrap';
+import {  } from 'react-router-dom';
+import {  } from 'react-bootstrap';
 
 class CommentContainer extends React.Component {
 
-    state = {
-
+    findProject = (pid) => {
+        return this.props.building.projects.find(p => p.id === pid )
     }
 
     render() {
-        console.log("CommentContainer rendered")
         return (
-            <CardGroup>
-                <Card className="project-card" style={{ width: '15rem' }}>
-                    <Card.Img variant="top" src="holder.js/100px180" />
-                    <Card.Body>
-                        <Card.Title>Comments</Card.Title>
-                        <Card.Text>
-                            Comment input
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-            </CardGroup>
+            <div className="Comment-container">
+                <h3>Comment Container</h3>
+            </div>
         )
     }
-
 }
 
 export default CommentContainer

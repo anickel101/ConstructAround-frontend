@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { CardGroup } from 'react-bootstrap';
 import BuildingMini from '../Components/BuildingMini'
 import ProjectCard from '../Components/ProjectCard'
+import Avatar from 'react-avatar';
+
 
 class ProjectContainer extends React.Component {
 

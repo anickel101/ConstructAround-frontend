@@ -4,6 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import BuildingShow from '../Components/BuildingShow'
 import ProjectContainer from '../Containers/ProjectContainer'
 import PermitContainer from '../Containers/PermitContainer'
+import ProjectShow from '../Components/ProjectShow'
 
 class BuildingDataContainer extends React.Component {
 
@@ -12,12 +13,12 @@ class BuildingDataContainer extends React.Component {
     }
 
     render() {
-        console.log("BDC Props: ", this.props)
+        // console.log("BDC Props: ", this.props)
         if (this.state.building) {
             return (
                 <div className="building-info">
                     <Switch>
-                        <Route path="/building/:id/projects/:pid" render={({match}) => <PermitContainer building={this.state.building} windowParams={match.params}/>}/>
+                        <Route path="/building/:id/projects/:pid" render={({match}) => <ProjectShow building={this.state.building} windowParams={match.params} addPhoto={this.props.addPhoto} />} />
                         <Route path="/building/:id/projects" render={() => <ProjectContainer building={this.state.building} />} />
                         <Route path="/building/:id" render={(windowProps) => <BuildingShow building={this.state.building} windowProps={windowProps} />} />
                     </Switch>
@@ -31,6 +32,5 @@ class BuildingDataContainer extends React.Component {
     }
 
 }
-
 
 export default BuildingDataContainer

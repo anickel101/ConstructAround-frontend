@@ -33,7 +33,7 @@ code {
 .searchbar {
   position: absolute;
   top: 1rem;
-  left: 50%;
+  left: 40%;
   transform: translateX(-50%);
   width: 100%;
   max-width: 400px;
@@ -69,8 +69,18 @@ code {
 
 .building-info {
   position: absolute;
+  width: 30rem;
   top: 1rem;
   right: 1rem;
   z-index: 24;
 }
+
+.modal {
+  position: absolute !important;
+  z-index: 50;
+}
+
+/* .photo-carousel {
+  height
+} */
 

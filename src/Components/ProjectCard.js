@@ -6,11 +6,53 @@ import '../App.css';
 
 class ProjectCard extends React.Component {
 
+    buttons = () => {
+        if (this.props.buttons === true) {
+            return (
+                <React.Fragment>
+                    <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/permits`}>
+                        <Button className="ml-2" size="sm" variant="secondary">Permits</Button>
+                    </Link>
+
+                    <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/photos`}>
+                        <Button className="ml-2" size="sm" variant="secondary">Photos</Button>
+                    </Link>
+
+                    <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/comments`}>
+                        <Button className="ml-2" size="sm" variant="secondary">Comments</Button>
+                    </Link>
+                </React.Fragment>
+            )
+        } else {
+            return (
+                <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}`}>
+                    <Button className="ml-2" size="sm" variant="secondary">See More</Button>
+                </Link>
+            )
+        }
+    }
+
+    closeButton = () => {
+        return (
+           <Link to={`/building/${this.props.project.building_id}/projects`}>
+               <Button className="ml-2" size="sm" variant="danger">X</Button>
+           </Link>
+        )
+    }
+
     render() {
         return (
-            <Card className="project-card pb-2" style={{ width: '15rem' }}>
+            <Card className="project-card mb-2">
                 <Card.Body>
-                    <Card.Title>Job Number: {this.props.project.job_num}</Card.Title>
+                    <Card.Title>
+                        <Row>
+                            <Col xs={10}>
+                                Job Number: {this.props.project.job_num}
+                            </Col>
+                            <Col className="text-right">
+                                {this.closeButton()}
+                            </Col>
+                        </Row></Card.Title>
                     <Card.Text className="mb-2 text-muted">
                         <Container>
                             <Row>
@@ -26,9 +68,7 @@ class ProjectCard extends React.Component {
                         </Container>
                     </Card.Text>
 
-                    <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}`}>
-                        <Button className="ml-2" size="sm" variant="secondary">See More</Button>
-                    </Link>
+                    {this.buttons()}
                         
                 </Card.Body>
             </Card>
