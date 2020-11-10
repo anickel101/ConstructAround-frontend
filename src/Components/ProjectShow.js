@@ -17,7 +17,6 @@ class ProjectShow extends React.Component {
     }
 
     render() {
-        console.log("Project Show Props: ", this.props)
         return (
             <div className="project-show">
                 <BuildingMini building={this.props.building}/>
@@ -25,7 +24,7 @@ class ProjectShow extends React.Component {
                 <Switch>
                     <Route path="/building/:id/projects/:pid/permits" render={() => <PermitContainer building={this.props.building} windowParams={this.props.windowParams}/>} />
                     <Route path="/building/:id/projects/:pid/photos" render={() => <PhotoContainer building={this.props.building} windowParams={this.props.windowParams} addPhoto={this.props.addPhoto}/>} />
-                    <Route path="/building/:id/projects/:pid/comments" render={() => <CommentContainer building={this.props.building} windowParams={this.props.windowParams}/>} />
+                    <Route path="/building/:id/projects/:pid/comments" render={() => <CommentContainer building={this.props.building} windowParams={this.props.windowParams} addCommentHandler={this.props.addCommentHandler}/>} />
                 </Switch>
             </div>
         )

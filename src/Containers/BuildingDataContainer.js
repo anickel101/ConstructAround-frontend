@@ -13,14 +13,13 @@ class BuildingDataContainer extends React.Component {
     }
 
     render() {
-        // console.log("BDC Props: ", this.props)
         if (this.state.building) {
             return (
                 <div className="building-info">
                     <Switch>
-                        <Route path="/building/:id/projects/:pid" render={({match}) => <ProjectShow building={this.state.building} windowParams={match.params} addPhoto={this.props.addPhoto} />} />
+                        <Route path="/building/:id/projects/:pid" render={({match}) => <ProjectShow building={this.state.building} windowParams={match.params} addPhoto={this.props.addPhoto} addCommentHandler={this.props.addCommentHandler} />} />
                         <Route path="/building/:id/projects" render={() => <ProjectContainer building={this.state.building} />} />
-                        <Route path="/building/:id" render={(windowProps) => <BuildingShow building={this.state.building} windowProps={windowProps} />} />
+                        <Route path="/building/:id" render={(windowProps) => <BuildingShow building={this.state.building} windowProps={windowProps} addCommentHandler={this.props.addCommentHandler} />} />
                     </Switch>
                 </div>
             )

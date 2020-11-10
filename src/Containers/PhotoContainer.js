@@ -80,7 +80,6 @@ class PhotoContainer extends React.Component {
         } else {
             return null
         }
-
     }
 
     render() {
@@ -92,7 +91,7 @@ class PhotoContainer extends React.Component {
                             <Card.Title as="h5">
                                 <Row>
                                     <Col>
-                                        Construction Photos
+                                        Construction Photos:
                                     </Col>
                                     <Col className="text-right">
                                         <Button onClick={this.showForm} variant="secondary" size="sm">{this.state.form ? "Close Form" : "Add Photo"}</Button>

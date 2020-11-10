@@ -105,9 +105,33 @@ class App extends Component {
     this.setState({selected: null})
   }
 
-  addPhoto = (formData) => {
-    console.log("In App's addPhoto()", formData)
+  addCommentHandler = (formData) => {
+    let options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({comment: formData})
+    }
 
+    fetch('http://localhost:3000/comments', options)
+    .then(resp => resp.json())
+    .then(comment => {
+      console.log(comment)
+      let newBuildings = [...this.state.buildings]
+      let pId = comment.project_id
+      let updatedBuilding = newBuildings.find(b => b.projects.find(p => p.id === pId))
+      let project = updatedBuilding.projects.find(p => p.id === pId)
+      project.comments.push(comment)
+
+      let i = newBuildings.findIndex(b => b.id === updatedBuilding.id)
+      newBuildings.splice(i, 1, updatedBuilding)
+      this.setState({buildings: newBuildings, selected: updatedBuilding})
+    })
+  }
+
+  addPhoto = (formData) => {
     let options = {
       method: 'POST',
       body: formData
@@ -116,7 +140,6 @@ class App extends Component {
     fetch('http://localhost:3000/photos', options)
     .then(resp => resp.json())
     .then(photo => {
-      console.log(photo)
       let newBuildings = [...this.state.buildings]
       let pId = photo.project_id
       let updatedBuilding = newBuildings.find(b => b.projects.find(p => p.id === pId))
@@ -126,39 +149,9 @@ class App extends Component {
       let i = newBuildings.findIndex(b => b.id === updatedBuilding.id)
       newBuildings.splice(i, 1, updatedBuilding)
       this.setState({buildings: newBuildings, selected: updatedBuilding})
-
-
     })
 
   }
-
-  // submitNewPhoto = (formData) => {
-	// 	fetch('http://localhost:3000/photos', {
-	// 		method: 'POST',
-	// 		headers: {
-	// 			Authorization: `Bearer ${window.sessionStorage.accessToken}`
-	// 		},
-	// 		body: formData
-	// 	})
-	// 		.then((resp) => resp.json())
-	// 		.then((img) => {
-	// 			console.log(img);
-	// 			const newArr = [ ...this.state.allCookbooks ];
-	// 			const recipe_id = img.recipe_id;
-	// 			const foundCb = newArr.find((cb) => cb.recipes.find((r) => r.id === recipe_id));
-	// 			const foundCb_id = foundCb.id;
-	// 			fetch(cookbooksURL + foundCb_id, {
-	// 				method: 'GET',
-	// 				headers: { Authorization: `Bearer ${window.sessionStorage.accessToken}` }
-	// 			})
-	// 				.then((resp) => resp.json())
-	// 				.then((newCB) => {
-	// 					let oldCbIndex = newArr.findIndex((cb) => cb.id === newCB.id);
-	// 					newArr.splice(oldCbIndex, 1, newCB);
-	// 					this.setState({ allCookbooks: newArr });
-	// 				});
-	// 		});
-  //   };
 
   render() {
     console.log("App rendering...")
@@ -170,7 +163,7 @@ class App extends Component {
           <Slider range={this.state.range} updateRange={this.updateRange} />
           <Map buildings={this.state.buildings} range={this.state.range} center={this.state.center} selected={this.state.selected} setSelected={this.setSelected} clearSelected={this.clearSelected} />
 
-          <Route path="/building" render={(windowProps) => <BuildingDataContainer building={this.selected()} windowProps={windowProps} addPhoto={this.addPhoto}/>} />
+          <Route path="/building" render={(windowProps) => <BuildingDataContainer building={this.selected()} windowProps={windowProps} addPhoto={this.addPhoto} addCommentHandler={this.addCommentHandler}/>} />
       </div>
 
     );
