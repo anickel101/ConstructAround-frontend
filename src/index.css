@@ -63,3 +63,8 @@ code {
   overflow-y: scroll;
   max-height: 26vh;
 }
+
+.stakeholder-list {
+  overflow-y: scroll;
+  max-height: 30vh;
+}

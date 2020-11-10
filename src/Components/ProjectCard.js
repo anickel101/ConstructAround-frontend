@@ -10,17 +10,30 @@ class ProjectCard extends React.Component {
         if (this.props.buttons === true) {
             return (
                 <React.Fragment>
-                    <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/permits`}>
-                        <Button className="ml-2" size="sm" variant="secondary">Permits</Button>
-                    </Link>
+                    <Row>
+                        <Col xs={10}>
+                            <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/permits`}>
+                            <Button className="ml-2" size="sm" variant="secondary">Permits</Button>
+                            </Link>
 
-                    <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/photos`}>
-                        <Button className="ml-2" size="sm" variant="secondary">Photos</Button>
-                    </Link>
+                            <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/photos`}>
+                                <Button className="ml-2" size="sm" variant="secondary">Photos</Button>
+                            </Link>
 
-                    <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/comments`}>
-                        <Button className="ml-2" size="sm" variant="secondary">Comments</Button>
-                    </Link>
+                            <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/comments`}>
+                                <Button className="ml-2" size="sm" variant="secondary">Comments</Button>
+                            </Link>
+
+                            <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/stakeholders`}>
+                                <Button className="ml-2" size="sm" variant="secondary">Stakeholders</Button>
+                            </Link>
+                        </Col>
+                        <Col className="text-right">
+                            <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/comments`}>
+                                <Button className="ml-2" size="sm" variant="primary">♥</Button>
+                            </Link>
+                        </Col>
+                    </Row>
                 </React.Fragment>
             )
         } else {
