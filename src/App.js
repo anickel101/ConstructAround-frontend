@@ -10,6 +10,9 @@ import Title from './Components/Title'
 import Slider from './Components/Slider'
 import BuildingDataContainer from './Containers/BuildingDataContainer'
 import ActionBar from './Components/ActionBar';
+import LoginForm from './Components/LoginForm'
+import SignUpForm from './Components/SignUpForm'
+import { Data } from '@react-google-maps/api';
 
 class App extends Component {
 
@@ -20,12 +23,101 @@ class App extends Component {
       lat: 40.665889,
       lng: -73.983694
     },
-    selected: null
+    selected: null,
+    current_user: {},
+    loginCount: 0,
+    signupCount: 0
   }
 
   componentDidMount() {
-    this.getBuildings()
+    // this.getBuildings()
+    // if (window.sessionStorage.accessToken) {
+    //   fetch('http://localhost:3000/auto_login', {
+    //     method: 'GET',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Accept': 'application/json',
+    //       Authorization: `Bearer ${window.sessionStorage.accessToken}`
+    //       }
+    //   })
+    //   .then(resp => resp.json())
+    //   .then(data => {
+    //     console.log(data)
+    //     this.setState({
+    //             current_user: data.user
+    //         })
+    //   })
+    // }
   }
+
+  logoutUser = () => {
+    window.sessionStorage.clear()
+    this.setState({ current_user: {} });
+  };
+
+  loginUser = ({ username, password }) => {
+    console.log("in app loginUser...", username, password)
+
+    let options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "Accepts": 'application/json'
+      },
+      body: JSON.stringify({ username: username, password: password })
+    };
+    fetch("http://localhost:3000/login", options)
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data)
+        if (data.user) {
+          console.log("WE HAVE DATA.USER!")
+          window.sessionStorage.accessToken = data.jwt
+          this.props.history.push('/')
+          this.setState({
+            current_user: data.user
+          })
+        } else {
+          let newLoginCount = this.state.loginCount + 1
+          this.setState(prevState => {
+            return ({
+              loginCount: newLoginCount
+            })
+          })
+        }
+      })
+  }
+
+  signup = (newUserObj) => {
+		let options = {
+			method: "POST",
+			headers: {         
+			'Content-Type': 'application/json',
+			"Accepts": 'application/json'
+			},
+			body: JSON.stringify({user: newUserObj})
+		}
+
+		fetch("http://localhost:3000/users", options)
+		.then(resp => resp.json())
+		.then(data => {		
+			console.log(data)	
+			if (data.user) {
+				window.sessionStorage.accessToken = data.jwt
+				this.setState({
+					currentUser: data.user
+				})
+			} else {
+
+				let newSignupCount = this.state.loginCount + 1
+				this.setState(prevState => {
+					return ({
+						signupCount: newSignupCount
+					})
+				})
+			}
+		})
+	}
 
   getBuildings() {
     fetch("http://localhost:3000/buildings")
@@ -76,7 +168,6 @@ class App extends Component {
     fetch(`http://localhost:3000/buildings/${searchLat}/${searchLng}/${this.state.range}`, options)
       .then(resp => resp.json())
       .then(data => {
-        // console.log("buildings after updateCenter(): ", data)
         this.setState({
           buildings: data,
           center: {
@@ -99,11 +190,11 @@ class App extends Component {
   }
 
   setSelected = (bldg) => {
-    this.setState({selected: bldg})
+    this.setState({ selected: bldg })
   }
 
   clearSelected = () => {
-    this.setState({selected: null})
+    this.setState({ selected: null })
   }
 
   addCommentHandler = (formData) => {
@@ -112,24 +203,25 @@ class App extends Component {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Authorization': `Bearer ${window.sessionStorage.accessToken}`
       },
-      body: JSON.stringify({comment: formData})
+      body: JSON.stringify({ comment: formData })
     }
 
     fetch('http://localhost:3000/comments', options)
-    .then(resp => resp.json())
-    .then(comment => {
-      console.log(comment)
-      let newBuildings = [...this.state.buildings]
-      let pId = comment.project_id
-      let updatedBuilding = newBuildings.find(b => b.projects.find(p => p.id === pId))
-      let project = updatedBuilding.projects.find(p => p.id === pId)
-      project.comments.push(comment)
+      .then(resp => resp.json())
+      .then(comment => {
+        console.log(comment)
+        let newBuildings = [...this.state.buildings]
+        let pId = comment.project_id
+        let updatedBuilding = newBuildings.find(b => b.projects.find(p => p.id === pId))
+        let project = updatedBuilding.projects.find(p => p.id === pId)
+        project.comments.push(comment)
 
-      let i = newBuildings.findIndex(b => b.id === updatedBuilding.id)
-      newBuildings.splice(i, 1, updatedBuilding)
-      this.setState({buildings: newBuildings, selected: updatedBuilding})
-    })
+        let i = newBuildings.findIndex(b => b.id === updatedBuilding.id)
+        newBuildings.splice(i, 1, updatedBuilding)
+        this.setState({ buildings: newBuildings, selected: updatedBuilding })
+      })
   }
 
   addPhoto = (formData) => {
@@ -139,36 +231,51 @@ class App extends Component {
     }
 
     fetch('http://localhost:3000/photos', options)
-    .then(resp => resp.json())
-    .then(photo => {
-      let newBuildings = [...this.state.buildings]
-      let pId = photo.project_id
-      let updatedBuilding = newBuildings.find(b => b.projects.find(p => p.id === pId))
-      let project = updatedBuilding.projects.find(p => p.id === pId)
-      project.photos.push(photo)
+      .then(resp => resp.json())
+      .then(photo => {
+        let newBuildings = [...this.state.buildings]
+        let pId = photo.project_id
+        let updatedBuilding = newBuildings.find(b => b.projects.find(p => p.id === pId))
+        let project = updatedBuilding.projects.find(p => p.id === pId)
+        project.photos.push(photo)
 
-      let i = newBuildings.findIndex(b => b.id === updatedBuilding.id)
-      newBuildings.splice(i, 1, updatedBuilding)
-      this.setState({buildings: newBuildings, selected: updatedBuilding})
-    })
+        let i = newBuildings.findIndex(b => b.id === updatedBuilding.id)
+        newBuildings.splice(i, 1, updatedBuilding)
+        this.setState({ buildings: newBuildings, selected: updatedBuilding })
+      })
 
   }
 
   render() {
-    console.log("App rendering...")
+    console.log("App rendering...", this.state.current_user)
 
-    return (
-      <div>
+    if (window.sessionStorage.accessToken && this.state.current_user.username) {
+      console.log("LOGGED IN")
+      return (
+        <div>
           <Title />
-          <SearchBar center={this.state.center} updateCenter={this.updateCenter} search={this.search}/>
+          <SearchBar center={this.state.center} updateCenter={this.updateCenter} search={this.search} />
           <Slider range={this.state.range} updateRange={this.updateRange} />
-          <ActionBar />
+          <ActionBar current_user={this.state.current_user} logout={this.logoutUser} />
           <Map buildings={this.state.buildings} range={this.state.range} center={this.state.center} selected={this.state.selected} setSelected={this.setSelected} clearSelected={this.clearSelected} />
 
-          <Route path="/building" render={(windowProps) => <BuildingDataContainer building={this.selected()} windowProps={windowProps} addPhoto={this.addPhoto} addCommentHandler={this.addCommentHandler}/>} />
-      </div>
+          <Route path="/building" render={(windowProps) => <BuildingDataContainer building={this.selected()} windowProps={windowProps} addPhoto={this.addPhoto} addCommentHandler={this.addCommentHandler} current_user={this.state.current_user}/>} />
+        </div>
+      )
+    } else {
+      console.log("LOGGED OUT")
+      return (
+        <div>
+          <Title />
+          <ActionBar current_user={this.state.current_user} logout={this.logoutUser} login={this.loginUser}/>
+          <Slider range={this.state.range} updateRange={this.updateRange} />
+          <Map buildings={this.state.buildings} range={this.state.range} center={this.state.center} selected={this.state.selected} setSelected={this.setSelected} clearSelected={this.clearSelected} />
+          <Route path="/login" render={() => <LoginForm login={this.loginUser}/>} />
+          <Route path="/signup" render={() => <SignUpForm />} />
+        </div>
+      )
+    }
 
-    );
   }
 }
 

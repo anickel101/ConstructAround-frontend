@@ -25,7 +25,7 @@ class ProjectShow extends React.Component {
                 <Switch>
                     <Route path="/building/:id/projects/:pid/permits" render={() => <PermitContainer building={this.props.building} windowParams={this.props.windowParams}/>} />
                     <Route path="/building/:id/projects/:pid/photos" render={() => <PhotoContainer building={this.props.building} windowParams={this.props.windowParams} addPhoto={this.props.addPhoto}/>} />
-                    <Route path="/building/:id/projects/:pid/comments" render={() => <CommentContainer building={this.props.building} windowParams={this.props.windowParams} addCommentHandler={this.props.addCommentHandler}/>} />
+                    <Route path="/building/:id/projects/:pid/comments" render={() => <CommentContainer building={this.props.building} windowParams={this.props.windowParams} addCommentHandler={this.props.addCommentHandler} current_user={this.props.current_user}/>} />
                     <Route path="/building/:id/projects/:pid/stakeholders" render={() => <UserContainer building={this.props.building} windowParams={this.props.windowParams}/>} />
                 </Switch>
             </div>

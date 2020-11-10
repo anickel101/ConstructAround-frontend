@@ -17,7 +17,7 @@ class BuildingDataContainer extends React.Component {
             return (
                 <div className="building-info">
                     <Switch>
-                        <Route path="/building/:id/projects/:pid" render={({match}) => <ProjectShow building={this.state.building} windowParams={match.params} addPhoto={this.props.addPhoto} addCommentHandler={this.props.addCommentHandler} />} />
+                        <Route path="/building/:id/projects/:pid" render={({match}) => <ProjectShow building={this.state.building} windowParams={match.params} addPhoto={this.props.addPhoto} addCommentHandler={this.props.addCommentHandler} current_user={this.props.current_user} />} />
                         <Route path="/building/:id/projects" render={() => <ProjectContainer building={this.state.building} />} />
                         <Route path="/building/:id" render={(windowProps) => <BuildingShow building={this.state.building} windowProps={windowProps} addCommentHandler={this.props.addCommentHandler} />} />
                     </Switch>

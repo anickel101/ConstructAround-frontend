@@ -43,7 +43,7 @@ class Map extends Component {
   renderSearchCircle = () => {
     return (
       <Circle
-      radius={this.props.range*1.0}
+      radius={this.props.range*1.1}
       center={this.props.center}
       onMouseover={() => console.log('mouseover')}
       onClick={() => console.log('click')}

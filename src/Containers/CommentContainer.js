@@ -8,7 +8,7 @@ class CommentContainer extends React.Component {
     state={
         project_id: this.props.windowParams.pid,
         content: "",
-        user_id: 1
+        user_id: this.props.current_user.id
     }
 
     findProject = (pid) => {

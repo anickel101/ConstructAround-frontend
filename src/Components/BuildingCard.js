@@ -65,9 +65,9 @@ class BuildingCard extends React.Component {
                         <Col xs={4}>
                             <Button className="ml-2" size="sm" variant="secondary" href={`http://a810-bisweb.nyc.gov/bisweb/PropertyProfileOverviewServlet?boro=${this.boroNum()}&houseno=${this.props.building.house_num}&street=${this.props.building.street_name}`} target="_blank">More at DOB</Button>
                         </Col>
-                        <Col xs={6}>
+                        <Col xs={6} className="text-right">
                             <Link to="/">
-                                <Button className="ml-2" size="sm" variant="danger">X</Button>
+                                <Button className="ml-2" size="sm" variant="outline-secondary">X</Button>
                             </Link>
                         </Col>
                     </Row>
