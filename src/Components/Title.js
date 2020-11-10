@@ -4,7 +4,7 @@ class Title extends React.Component {
 
     render() {
         return (
-            <div className="data-test">
+            <div className="title">
                 <h2>ConstructAround</h2>
             </div>
         )

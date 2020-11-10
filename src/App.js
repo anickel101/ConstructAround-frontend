@@ -9,6 +9,7 @@ import Map from './Containers/Map'
 import Title from './Components/Title'
 import Slider from './Components/Slider'
 import BuildingDataContainer from './Containers/BuildingDataContainer'
+import ActionBar from './Components/ActionBar';
 
 class App extends Component {
 
@@ -161,6 +162,7 @@ class App extends Component {
           <Title />
           <SearchBar center={this.state.center} updateCenter={this.updateCenter} search={this.search}/>
           <Slider range={this.state.range} updateRange={this.updateRange} />
+          <ActionBar />
           <Map buildings={this.state.buildings} range={this.state.range} center={this.state.center} selected={this.state.selected} setSelected={this.setSelected} clearSelected={this.clearSelected} />
 
           <Route path="/building" render={(windowProps) => <BuildingDataContainer building={this.selected()} windowProps={windowProps} addPhoto={this.addPhoto} addCommentHandler={this.addCommentHandler}/>} />

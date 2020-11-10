@@ -13,7 +13,7 @@ code {
 }
 
 
-.data-test {
+.title {
   position: absolute;
   top: 1rem;
   left: 1rem;
@@ -67,4 +67,12 @@ code {
 .stakeholder-list {
   overflow-y: scroll;
   max-height: 30vh;
+}
+
+.action-bar {
+  position: absolute;
+  width: 8rem;
+  top: 7rem;
+  left: 1rem;
+  z-index: 24;
 }

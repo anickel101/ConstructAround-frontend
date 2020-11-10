@@ -40,7 +40,7 @@ class BuildingMini extends React.Component {
      closeButton = () => {
          return (
             <Link to="/">
-                <Button className="ml-2" size="sm" variant="danger">X</Button>
+                <Button className="ml-2" size="sm" variant="outline-secondary">X</Button>
             </Link>
          )
      }
