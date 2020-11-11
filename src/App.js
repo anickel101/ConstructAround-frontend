@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Component } from "react"
-import { Redirect, Route, withRouter } from 'react-router-dom'
+import { Redirect, Route, withRouter, generatePath } from 'react-router-dom'
 import { Alert } from 'react-bootstrap';
 
 
@@ -156,7 +156,7 @@ class App extends Component {
       })
   }
 
-  updateCenter = (newLat, newLng) => {
+  updateCenter = (newLat, newLng, fav) => {
     let options = {
       headers: {
         'Content-Type': 'application/json',
@@ -184,6 +184,17 @@ class App extends Component {
               lng: parseFloat(choppedLng)
             }
           })
+          if (fav) {
+            let path = generatePath("/building/:bid/projects/:pid", {
+              bid: fav.building_id,
+              pid: fav.project_id
+              })
+
+            this.props.history.push(path)
+
+            console.log("End of SetState")
+
+          }
         }
       })
   }
@@ -309,10 +320,8 @@ class App extends Component {
 
       updatedBuilding.projects.splice(projectIndex, 1, project)
 
-      // need to add user_project to current_user
       let upId = project.stakeholders.find(sh => sh.id === formData.user_id).up_id
       formData["id"] = upId
-      console.log("new formData: ", formData)
 
       let updatedUser = this.state.current_user
 
@@ -324,8 +333,12 @@ class App extends Component {
     })
   }
 
+  renderFavoriteInfo = (fav) => {
+    this.updateCenter(fav.p_lat, fav.p_long, fav)
+  }
+
   render() {
-    console.log("App rendering...", this.state.current_user)
+    console.log("App rendering...", this.state.current_user.username)
 
     if (window.sessionStorage.accessToken && this.state.current_user.username) {
       console.log("LOGGED IN")
@@ -334,7 +347,7 @@ class App extends Component {
           <Title />
           <SearchBar center={this.state.center} updateCenter={this.updateCenter} search={this.search} />
           <Slider range={this.state.range} updateRange={this.updateRange} />
-          <ActionBar current_user={this.state.current_user} logout={this.logoutUser} />
+          <ActionBar current_user={this.state.current_user} logout={this.logoutUser} renderFavoriteInfo={this.renderFavoriteInfo}/>
           <Map buildings={this.state.buildings} range={this.state.range} center={this.state.center} selected={this.state.selected} setSelected={this.setSelected} clearSelected={this.clearSelected} />
 
           <Route path="/building" render={(windowProps) => <BuildingDataContainer building={this.selected()} windowProps={windowProps} addPhoto={this.addPhoto} addCommentHandler={this.addCommentHandler} current_user={this.state.current_user} followHandler={this.followHandler} unfollowHandler={this.unfollowHandler}/>} />
@@ -346,7 +359,7 @@ class App extends Component {
         <div>
           <Title />
           <SearchBar center={this.state.center} updateCenter={this.updateCenter} search={this.search} />
-          <ActionBar current_user={this.state.current_user} logout={this.logoutUser} login={this.loginUser}/>
+          <ActionBar current_user={this.state.current_user} logout={this.logoutUser} login={this.loginUser} renderFavoriteInfo={this.renderFavoriteInfo}/>
           <Slider range={this.state.range} updateRange={this.updateRange} />
           <Map buildings={this.state.buildings} range={this.state.range} center={this.state.center} selected={this.state.selected} setSelected={this.setSelected} clearSelected={this.clearSelected} />
           <Route path="/login" render={() => <LoginForm login={this.loginUser}/>} />

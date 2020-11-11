@@ -26,6 +26,10 @@ class ActionBar extends React.Component {
         return <Button size="sm" className="mb-2" variant="outline-secondary" onClick={this.props.logout}>Logout</Button> 
     }
 
+    renderDropdownItems = () => {
+        return this.props.current_user.followeds.map(f => <Dropdown.Item key={f.project_id} onClick={() => this.props.renderFavoriteInfo(f)}>{`${f.address} - ${f.job_num}`}</Dropdown.Item>)
+    }
+
     searchesDropdown = () => {
         return (
             <Dropdown size="sm">
@@ -33,9 +37,7 @@ class ActionBar extends React.Component {
                     Searches
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">12 Prospect Ave.</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">599 Johnson Ave.</Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">415 9th Street</Dropdown.Item>
+                    {this.renderDropdownItems()}
                 </Dropdown.Menu>
             </Dropdown>
         )
@@ -48,9 +50,7 @@ class ActionBar extends React.Component {
                     Followeds
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">12 Prospect Ave.</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">599 Johnson Ave.</Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">415 9th Street</Dropdown.Item>
+                    {this.renderDropdownItems()}
                 </Dropdown.Menu>
             </Dropdown>
         )
@@ -75,7 +75,7 @@ class ActionBar extends React.Component {
                         <Col>
                             <ButtonGroup vertical size="sm" style={{ display: 'flex', justifyContent: 'center' }}>
                                 {this.props.current_user.username ? this.getLogoutButton() : this.getLoginButton()}
-                                {this.props.current_user.username ? this.searchesDropdown() : null}
+                                {/* {this.props.current_user.username ? this.searchesDropdown() : null} */}
                                 {this.props.current_user.username ? this.followedsDropdown() : null}
                             </ButtonGroup>
                         </Col>

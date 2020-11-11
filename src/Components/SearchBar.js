@@ -46,9 +46,9 @@ function SearchBar(props) {
             const results = await getGeocode({address})
             const place_id = results[0].place_id
             const details = await getDetails(place_id)
-            console.log("Address: ", address)
-            console.log("Results[0]:", results[0])
-            console.log("Details: ", details)
+            // console.log("Address: ", address)
+            // console.log("Results[0]:", results[0])
+            // console.log("Details: ", details)
             const {lat, lng} = await getLatLng(results[0])
             setValue(e, false)
             clearSuggestions()
