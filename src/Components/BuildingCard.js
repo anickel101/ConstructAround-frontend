@@ -34,7 +34,6 @@ class BuildingCard extends React.Component {
     }
 
     render() {
-        console.log("Building Card project prop: ", this.props.building)
         return (
             <Card className="building-card pb-2" >
                 <Card.Img className="building-card-img p-2" variant="top" src={this.getStreetView()} />

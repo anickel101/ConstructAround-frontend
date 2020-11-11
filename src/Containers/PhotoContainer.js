@@ -60,6 +60,11 @@ class PhotoContainer extends React.Component {
 		});
     };
 
+    addPhoto = (form) => {
+        this.showForm()
+        this.props.addPhoto(form)
+    }
+
     showForm = () => {
         this.setState(prevState => {
             return ({
@@ -73,7 +78,7 @@ class PhotoContainer extends React.Component {
             return (
                 <Card>
                     <Card.Body>
-                        <PhotoUploadForm addPhoto={this.props.addPhoto} projectId={parseInt(this.props.windowParams.pid)}/>
+                        <PhotoUploadForm addPhoto={this.addPhoto} projectId={parseInt(this.props.windowParams.pid)}/>
                     </Card.Body>
                 </Card>
             )

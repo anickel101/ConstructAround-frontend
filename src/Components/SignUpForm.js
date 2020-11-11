@@ -7,7 +7,11 @@ class SignUpForm extends React.Component {
 
     state = {
         username: "",
-        password: ""
+        password: "",
+        first_name: "",
+        last_name: "",
+        img_url: "",
+        
     }
 
     changeHandler = (e) => {

@@ -15,7 +15,6 @@ class ActionBar extends React.Component {
     }
 
     goToHome = () => {
-        console.log("GO HOME")
         this.props.history.push("/login")
     }
 
@@ -58,7 +57,7 @@ class ActionBar extends React.Component {
     }
 
     render() {
-        console.log("ActionBar props: ", this.props)
+        // console.log("ActionBar props: ", this.props)
         return (
             <div className="action-bar">
                 <Card className="m-2 p-2">

@@ -2,7 +2,9 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Component } from "react"
-import { Route, withRouter } from 'react-router-dom'
+import { Redirect, Route, withRouter } from 'react-router-dom'
+import { Alert } from 'react-bootstrap';
+
 
 import SearchBar from './Components/SearchBar'
 import Map from './Containers/Map'
@@ -30,29 +32,26 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // this.getBuildings()
-    // if (window.sessionStorage.accessToken) {
-    //   fetch('http://localhost:3000/auto_login', {
-    //     method: 'GET',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Accept': 'application/json',
-    //       Authorization: `Bearer ${window.sessionStorage.accessToken}`
-    //       }
-    //   })
-    //   .then(resp => resp.json())
-    //   .then(data => {
-    //     console.log(data)
-    //     this.setState({
-    //             current_user: data.user
-    //         })
-    //   })
-    // }
+    if (window.sessionStorage.accessToken) {
+      fetch('http://localhost:3000/auto_login', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${window.sessionStorage.accessToken}`
+          }
+      })
+      .then(resp => resp.json())
+      .then(user => {
+        console.log("auto login: ", user)
+        this.setState({
+                current_user: user
+            })
+      })
+    }
   }
 
   logoutUser = () => {
     window.sessionStorage.clear()
-    this.setState({ current_user: {} });
+    this.setState({ current_user: {}, selected: null, buildings: [] });
   };
 
   loginUser = ({ username, password }) => {
@@ -71,8 +70,7 @@ class App extends Component {
       .then((data) => {
         console.log(data)
         if (data.user) {
-          console.log("WE HAVE DATA.USER!")
-          window.sessionStorage.accessToken = data.jwt
+          window.sessionStorage.accessToken = data.token
           this.props.history.push('/')
           this.setState({
             current_user: data.user
@@ -103,7 +101,7 @@ class App extends Component {
 		.then(data => {		
 			console.log(data)	
 			if (data.user) {
-				window.sessionStorage.accessToken = data.jwt
+				window.sessionStorage.accessToken = data.token
 				this.setState({
 					currentUser: data.user
 				})
@@ -131,7 +129,9 @@ class App extends Component {
     let options = {
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${window.sessionStorage.accessToken}`
+
       }
     }
 
@@ -144,10 +144,15 @@ class App extends Component {
     fetch(`http://localhost:3000/buildings/${searchLat}/${searchLng}/${newRange}`, options)
       .then(resp => resp.json())
       .then(data => {
-        this.setState({
-          buildings: data,
-          range: newRange
-        })
+        console.log("range data: ", data)
+        if (data.message) {
+          return <Redirect to="/" />
+        } else {
+          this.setState({
+            buildings: data,
+            range: newRange
+          })
+        }
       })
   }
 
@@ -155,7 +160,8 @@ class App extends Component {
     let options = {
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${window.sessionStorage.accessToken}`
       }
     }
 
@@ -168,13 +174,17 @@ class App extends Component {
     fetch(`http://localhost:3000/buildings/${searchLat}/${searchLng}/${this.state.range}`, options)
       .then(resp => resp.json())
       .then(data => {
-        this.setState({
-          buildings: data,
-          center: {
-            lat: parseFloat(choppedLat),
-            lng: parseFloat(choppedLng)
-          }
-        })
+        if (data.message) {
+          return <Redirect to="/" />
+        } else {
+          this.setState({
+            buildings: data,
+            center: {
+              lat: parseFloat(choppedLat),
+              lng: parseFloat(choppedLng)
+            }
+          })
+        }
       })
   }
 
@@ -227,6 +237,9 @@ class App extends Component {
   addPhoto = (formData) => {
     let options = {
       method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${window.sessionStorage.accessToken}`
+      },
       body: formData
     }
 
@@ -267,6 +280,7 @@ class App extends Component {
       return (
         <div>
           <Title />
+          <SearchBar center={this.state.center} updateCenter={this.updateCenter} search={this.search} />
           <ActionBar current_user={this.state.current_user} logout={this.logoutUser} login={this.loginUser}/>
           <Slider range={this.state.range} updateRange={this.updateRange} />
           <Map buildings={this.state.buildings} range={this.state.range} center={this.state.center} selected={this.state.selected} setSelected={this.setSelected} clearSelected={this.clearSelected} />

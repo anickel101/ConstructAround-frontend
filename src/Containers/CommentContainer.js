@@ -47,7 +47,6 @@ class CommentContainer extends React.Component {
 
     renderComments = () => {
         let project = this.findProject(parseInt(this.props.windowParams.pid))
-        console.log("Comments: ", project.comments)
         return project.comments.map((c, i) => <ListGroup.Item variant="light" className="text-muted" key={i}>{`${c.post_date} - ${c.name}:  ${c.content}`}</ListGroup.Item>)        
     }
 
