@@ -269,13 +269,18 @@ class App extends Component {
     fetch(`http://localhost:3000/user_projects/${followId}`, options)
     .then(resp => resp.json())
     .then(project => {
-      console.log("In unfollowHandler, project:", project)
+      console.log("AFTER UNFOLLOW FETCH: ", project)
       let newBuildings = [...this.state.buildings]
       let pId = project.id
       let updatedBuilding = newBuildings.find(b => b.projects.find(p => p.id === pId))
+
+      let updatedUser = this.state.current_user
+      let upId = updatedUser.user_projects.findIndex(up => up.id === followId)
+      updatedUser.user_projects.splice(upId, 1)
+
       let i = updatedBuilding.projects.findIndex(p => p.id === pId)
       updatedBuilding.projects.splice(i, 1, project)
-      this.setState({ buildings: newBuildings, selected: updatedBuilding })
+      this.setState({ buildings: newBuildings, selected: updatedBuilding, current_user: updatedUser })
     })
   }
 
@@ -293,28 +298,34 @@ class App extends Component {
 
     fetch('http://localhost:3000/user_projects', options)
     .then(resp => resp.json())
-    .then(data => {
-      console.log("AFTER UP FETCH: ", data)
-      let newBuildings = [...this.state.buildings]
-      let pId = data.user_project.project_id
-      let updatedBuilding = newBuildings.find(b => b.projects.find(p => p.id === pId))
-      let project = updatedBuilding.projects.find(p => p.id === pId)
+    .then(project => {
+      console.log("AFTER FOLLOW FETCH: ", project)
 
-      if (!project.stakeholders.find(s => s.id === data.stakeholder.id)) {
-        project.stakeholders.push(data.stakeholder)
-      }
+      let newBuildings = [...this.state.buildings]
+      let pId = project.id
+
+      let updatedBuilding = newBuildings.find(b => b.projects.find(p => p.id === pId))
+      let projectIndex = updatedBuilding.projects.find(p => p.id === pId)
+
+      updatedBuilding.projects.splice(projectIndex, 1, project)
+
+      // need to add user_project to current_user
+      let upId = project.stakeholders.find(sh => sh.id === formData.user_id).up_id
+      formData["id"] = upId
+      console.log("new formData: ", formData)
 
       let updatedUser = this.state.current_user
-      updatedUser.user_projects.push(data.user_project)
+
+      updatedUser.user_projects.push(formData)
 
       let i = newBuildings.findIndex(b => b.id === updatedBuilding.id)
       newBuildings.splice(i, 1, updatedBuilding)
-      this.setState({ buildings: newBuildings, selected: updatedBuilding, current_user: updatedUser })
+      this.setState({ buildings: newBuildings, selected: updatedBuilding, current_user: updatedUser})
     })
   }
 
   render() {
-    console.log("App rendering...", this.state.current_user.username)
+    console.log("App rendering...", this.state.current_user)
 
     if (window.sessionStorage.accessToken && this.state.current_user.username) {
       console.log("LOGGED IN")

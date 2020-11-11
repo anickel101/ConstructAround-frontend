@@ -10,7 +10,9 @@ class UserContainer extends React.Component {
     }
 
     getStakeholders = () => {
+
         let project = this.findProject(parseInt(this.props.windowParams.pid))
+        console.log("project stakeholders: ", project.stakeholders)
 		return project.stakeholders.map((s, i) => {
 			return (
 				<ListGroup.Item key={i}>

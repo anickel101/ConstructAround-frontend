@@ -38,13 +38,6 @@ class ProjectCard extends React.Component {
         this.props.followHandler(follow)
     }
 
-        // let form = new FormData()
-        // form.append("user_id", this.props.current_user.id )
-        // form.append("project_id", this.props.project.id )
-        // form.append("category", e.target.value)
-        // this.props.followHandler(form)
-
-
     buttons = () => {
         if (this.props.buttons === true) {
             return (
@@ -69,7 +62,6 @@ class ProjectCard extends React.Component {
                         </Col>
                         <Col className="text-right">
                             {this.followButtonHandler()}
-                            {/* <Button className="ml-2" onClick={this.typeDropdown} size="sm" variant="primary">♥</Button> */}
                         </Col>
                     </Row>
                 </React.Fragment>
