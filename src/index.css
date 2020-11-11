@@ -88,9 +88,14 @@ code {
 
 .login-overlay {
   position: absolute;
+  background-color: white;
   opacity: 1;
   z-index: 12;
   left: 1rem;
   top: 45%;
   max-width: 30vw !important;
+  min-width: 20vw !important;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 5px 10px 5px 1px rgba(0,0,0,.5)
 }

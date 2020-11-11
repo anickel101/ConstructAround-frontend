@@ -31,17 +31,18 @@ class SignUpForm extends React.Component {
             <Container className="login-overlay">
                 <Form onSubmit={this.submitHandler}>
                     <Form.Group controlId="formBasicUsername">
-                        <Form.Label>Username:</Form.Label>
-                        <Form.Control type="text" name="username" placeholder="Enter username" value={this.state.username} onChange={this.changeHandler} />
+                        <Form.Label size="sm" >Username:</Form.Label>
+                        <Form.Control size="sm" type="text" name="username" placeholder="Enter username" value={this.state.username} onChange={this.changeHandler} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">
-                        <Form.Label>Password: </Form.Label>
-                        <Form.Control type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.changeHandler} />
+                        <Form.Label size="sm" >Password: </Form.Label>
+                        <Form.Control size="sm" type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.changeHandler} />
                     </Form.Group>
-                    <Button className="mr-4" variant="primary" type="submit">
+                    <Button size="sm" className="mr-4" variant="primary" type="submit">
                         Sign Up
 				    </Button>
+                    <Link to="/login">Back to Login</Link>
                 </Form>
             </Container>
         );

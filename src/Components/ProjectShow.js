@@ -21,7 +21,7 @@ class ProjectShow extends React.Component {
         return (
             <div className="project-show">
                 <BuildingMini building={this.props.building}/>
-                <ProjectCard buttons={true} project={this.findProject(parseInt(this.props.windowParams.pid))}/>
+                <ProjectCard buttons={true} project={this.findProject(parseInt(this.props.windowParams.pid))} windowProps={this.props.windowProps} current_user={this.props.current_user} followHandler={this.props.followHandler} unfollowHandler={this.props.unfollowHandler}/>
                 <Switch>
                     <Route path="/building/:id/projects/:pid/permits" render={() => <PermitContainer building={this.props.building} windowParams={this.props.windowParams}/>} />
                     <Route path="/building/:id/projects/:pid/photos" render={() => <PhotoContainer building={this.props.building} windowParams={this.props.windowParams} addPhoto={this.props.addPhoto}/>} />
