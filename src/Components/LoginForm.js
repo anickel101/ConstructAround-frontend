@@ -24,21 +24,19 @@ class LoginForm extends React.Component {
 
     render() {
         return (
-            <Container className="login-overlay">
+            <Container className="pt-3 login-overlay text-muted">
                 <Form onSubmit={this.submitHandler}>
                     <Form.Group controlId="formBasicUsername">
-                        <Form.Label size="sm">Username:</Form.Label>
-                        <Form.Control size="sm" type="text" name="username" placeholder="Enter username" value={this.state.username} onChange={this.changeHandler} />
+                        <Form.Control size="sm" type="text" name="username" placeholder="Username..." value={this.state.username} onChange={this.changeHandler} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">
-                        <Form.Label size="sm">Password: </Form.Label>
-                        <Form.Control size="sm" type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.changeHandler} />
+                        <Form.Control size="sm" type="password" name="password" placeholder="Password..." value={this.state.password} onChange={this.changeHandler} />
                     </Form.Group>
                     <Button size="sm" className="mr-4" variant="primary" type="submit">
                         Login
 				    </Button>
-                    <Link to="/signup">Sign Up</Link>
+                    <Link size="sm" to="/signup">Sign Up</Link>
 
 
                 </Form>

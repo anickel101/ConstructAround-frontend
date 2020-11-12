@@ -18,7 +18,8 @@ code {
   top: 1rem;
   left: 1rem;
   z-index: 20;
-  color: grey;
+  color: white;
+  text-shadow: 1px 1px 2px black;
   padding-left: 25px;
 }
 
@@ -32,18 +33,21 @@ code {
 
 .searchbar {
   position: absolute;
-  top: 1rem;
-  left: 40%;
+  bottom: 3rem;
+  left: 25rem;
   transform: translateX(-50%);
   width: 100%;
   max-width: 400px;
   z-index: 10;
+  border-radius: 5px;
 }
 
 .searchbar input {
   padding: 0.5rem;
   font-size: 1.0rem;
   width: 100%;
+  border-radius: 5px;
+
 }
 
 .building-info {
@@ -93,8 +97,8 @@ code {
   z-index: 12;
   left: 1rem;
   top: 45%;
-  max-width: 30vw !important;
-  min-width: 20vw !important;
+  max-width: 25vw !important;
+  min-width: 250px !important;
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 5px 10px 5px 1px rgba(0,0,0,.5)

@@ -18,7 +18,7 @@ const mapContainerStyle = {
 class Map extends Component {
 
   renderBuildingMarkers = () => {
-      return this.props.buildings.map(bldg => <Marker key={bldg.id} bldg={bldg} onClick={() => this.props.setSelected(bldg)} position={{lat: bldg.gis_lat, lng: bldg.gis_long}}/>)
+      return this.props.buildings.map(bldg => <Marker key={bldg.id} bldg={bldg} onClick={() => this.props.setSelected(bldg)} position={{lat: bldg.gis_lat, lng: bldg.gis_long}} />)
   }
 
   componentDidMount() {
@@ -45,9 +45,7 @@ class Map extends Component {
       <Circle
       radius={this.props.range*1.1}
       center={this.props.center}
-      onMouseover={() => console.log('mouseover')}
-      onClick={() => console.log('click')}
-      onMouseout={() => console.log('mouseout')}
+
       strokeColor='transparent'
       strokeOpacity={0}
       strokeWeight={5}
@@ -74,9 +72,9 @@ class Map extends Component {
 
                 {this.renderSearchCircle()}
 
-                {this.props.selected ? (<InfoWindow position={{lat: this.props.selected.gis_lat, lng: this.props.selected.gis_long}} onCloseClick={this.props.clearSelected} >
+                {this.props.selected ? (<InfoWindow position={{lat: this.props.selected.gis_lat, lng: this.props.selected.gis_long}} onCloseClick={this.props.clearSelected}  >
                     <div>
-                        <h5>Building!</h5>
+                        <h5>Active Work!</h5>
                         <p>BIN: {this.props.selected.bin}</p>
                         <Link to={`/building/${this.props.selected.id}`} id={`${this.props.selected.id}`}>See More</Link>
                     </div>
@@ -90,3 +88,4 @@ class Map extends Component {
 }
 
 export default Map
+

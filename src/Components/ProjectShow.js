@@ -14,6 +14,8 @@ import UserContainer from '../Containers/UserContainer'
 class ProjectShow extends React.Component {
 
     findProject = (pid) => {
+        console.log("ProjectShow findProject: ", this.props.building.projects.find(p => p.id === pid ))
+        console.log("Project Num: ", parseInt(this.props.windowParams.pid))
         return this.props.building.projects.find(p => p.id === pid )
     }
 

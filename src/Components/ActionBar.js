@@ -57,7 +57,6 @@ class ActionBar extends React.Component {
     }
 
     render() {
-        // console.log("ActionBar props: ", this.props)
         return (
             <div className="action-bar">
                 <Card className="m-2 p-2">
@@ -67,8 +66,13 @@ class ActionBar extends React.Component {
                         </Col>
                     </Row>
                     <Row>
+                        <Col className="text-center">
+                            Welcome
+                        </Col>
+                    </Row>
+                    <Row>
                         <Col className="text-center mb-2">
-                            Welcome!
+                            {this.props.current_user.first_name}!
                         </Col>
                     </Row>
                     <Row >

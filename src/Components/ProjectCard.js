@@ -84,38 +84,43 @@ class ProjectCard extends React.Component {
     }
 
     render() {
-        return (
-            <Card className="project-card mb-2">
-                <Card.Body>
-                    <Card.Title>
-                        <Row>
-                            <Col xs={10}>
-                                Job Number: {this.props.project.job_num}
-                            </Col>
-                            <Col className="text-right">
-                                {this.closeButton()}
-                            </Col>
-                        </Row></Card.Title>
-                    <Card.Text className="mb-2 text-muted">
-                        <Container>
+        if (this.props.project) {
+            return (
+                <Card className="project-card mb-2">
+                    <Card.Body>
+                        <Card.Title>
                             <Row>
-                                <Col>
-                                    Job Type: {this.props.project.job_type}
+                                <Col xs={10}>
+                                    Job Number: {this.props.project.job_num}
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    Job Description: {this.props.project.job_description ? this.props.project.job_description : "N/A"}
+                                <Col className="text-right">
+                                    {this.closeButton()}
                                 </Col>
-                            </Row>
-                        </Container>
-                    </Card.Text>
+                            </Row></Card.Title>
+                        <Card.Text className="mb-2 text-muted">
+                            <Container>
+                                <Row>
+                                    <Col>
+                                        Job Type: {this.props.project.job_type}
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        Job Description: {this.props.project.job_description ? this.props.project.job_description : "N/A"}
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Card.Text>
+    
+                        {this.buttons()}
+    
+                    </Card.Body>
+                </Card>
+            )
+        } else {
+            return null
+        }
 
-                    {this.buttons()}
-
-                </Card.Body>
-            </Card>
-        )
     }
 }
 

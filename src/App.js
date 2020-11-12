@@ -41,7 +41,6 @@ class App extends Component {
       })
       .then(resp => resp.json())
       .then(user => {
-        console.log("auto login: ", user)
         this.setState({
                 current_user: user
             })
@@ -55,8 +54,6 @@ class App extends Component {
   };
 
   loginUser = ({ username, password }) => {
-    console.log("in app loginUser...", username, password)
-
     let options = {
       method: 'POST',
       headers: {
@@ -68,9 +65,9 @@ class App extends Component {
     fetch("http://localhost:3000/login", options)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data)
         if (data.user) {
           window.sessionStorage.accessToken = data.token
+          console.log("after login fetch: ", data)
           this.props.history.push('/')
           this.setState({
             current_user: data.user
@@ -93,20 +90,22 @@ class App extends Component {
 			'Content-Type': 'application/json',
 			"Accepts": 'application/json'
 			},
-			body: JSON.stringify({user: newUserObj})
+			body: JSON.stringify(newUserObj)
 		}
 
 		fetch("http://localhost:3000/users", options)
 		.then(resp => resp.json())
 		.then(data => {		
-			console.log(data)	
+      console.log("sign-up: ", data)
 			if (data.user) {
-				window.sessionStorage.accessToken = data.token
+        console.log("in the right spot")
+        window.sessionStorage.accessToken = data.token
+        this.props.history.push('/')
 				this.setState({
-					currentUser: data.user
+					current_user: data.user
 				})
 			} else {
-
+        console.log("error, not in the right place")
 				let newSignupCount = this.state.loginCount + 1
 				this.setState(prevState => {
 					return ({
@@ -144,7 +143,6 @@ class App extends Component {
     fetch(`http://localhost:3000/buildings/${searchLat}/${searchLng}/${newRange}`, options)
       .then(resp => resp.json())
       .then(data => {
-        console.log("range data: ", data)
         if (data.message) {
           return <Redirect to="/" />
         } else {
@@ -177,23 +175,34 @@ class App extends Component {
         if (data.message) {
           return <Redirect to="/" />
         } else {
-          this.setState({
-            buildings: data,
-            center: {
-              lat: parseFloat(choppedLat),
-              lng: parseFloat(choppedLng)
-            }
-          })
+
+          if (fav) {
+            let selected = data.find(b => b.id === fav.building_id)
+            this.setState({
+              buildings: data,
+              center: {
+                lat: parseFloat(choppedLat),
+                lng: parseFloat(choppedLng)
+              },
+              selected: selected
+            })
+
+          } else {
+            this.setState({
+              buildings: data,
+              center: {
+                lat: parseFloat(choppedLat),
+                lng: parseFloat(choppedLng)
+              }
+            })
+          }
+          
           if (fav) {
             let path = generatePath("/building/:bid/projects/:pid", {
               bid: fav.building_id,
               pid: fav.project_id
               })
-
             this.props.history.push(path)
-
-            console.log("End of SetState")
-
           }
         }
       })
@@ -205,16 +214,16 @@ class App extends Component {
 
   selected = () => {
     let split = this.props.location.pathname.split("/")
-    // console.log("Building ID: ", parseInt(split[2]))
-    // console.log("Building Data: ", this.state.buildings.find(b => b.id === parseInt(split[2])))
     return this.state.buildings.find(b => b.id === parseInt(split[2]))
   }
 
   setSelected = (bldg) => {
+    this.props.history.push(`/building/${bldg.id}`)
     this.setState({ selected: bldg })
   }
 
   clearSelected = () => {
+    this.props.history.push("/")
     this.setState({ selected: null })
   }
 
@@ -279,24 +288,18 @@ class App extends Component {
 
     fetch(`http://localhost:3000/user_projects/${followId}`, options)
     .then(resp => resp.json())
-    .then(project => {
-      console.log("AFTER UNFOLLOW FETCH: ", project)
+    .then(data => {
       let newBuildings = [...this.state.buildings]
-      let pId = project.id
+      let pId = data.project.id
       let updatedBuilding = newBuildings.find(b => b.projects.find(p => p.id === pId))
 
-      let updatedUser = this.state.current_user
-      let upId = updatedUser.user_projects.findIndex(up => up.id === followId)
-      updatedUser.user_projects.splice(upId, 1)
-
       let i = updatedBuilding.projects.findIndex(p => p.id === pId)
-      updatedBuilding.projects.splice(i, 1, project)
-      this.setState({ buildings: newBuildings, selected: updatedBuilding, current_user: updatedUser })
+      updatedBuilding.projects.splice(i, 1, data.project)
+      this.setState({ buildings: newBuildings, selected: updatedBuilding, current_user: data.user })
     })
   }
 
   followHandler = (formData) => {
-    console.log("IN APP followHandler()...", formData)
     let options = {
       method: 'POST',
       headers: {
@@ -309,27 +312,27 @@ class App extends Component {
 
     fetch('http://localhost:3000/user_projects', options)
     .then(resp => resp.json())
-    .then(project => {
-      console.log("AFTER FOLLOW FETCH: ", project)
+    .then(data => {
 
       let newBuildings = [...this.state.buildings]
-      let pId = project.id
+      let pId = data.project.id
 
       let updatedBuilding = newBuildings.find(b => b.projects.find(p => p.id === pId))
       let projectIndex = updatedBuilding.projects.find(p => p.id === pId)
 
-      updatedBuilding.projects.splice(projectIndex, 1, project)
+      updatedBuilding.projects.splice(projectIndex, 1, data.project)
 
-      let upId = project.stakeholders.find(sh => sh.id === formData.user_id).up_id
+      let upId = data.project.stakeholders.find(sh => sh.id === formData.user_id).up_id
       formData["id"] = upId
-
-      let updatedUser = this.state.current_user
-
-      updatedUser.user_projects.push(formData)
 
       let i = newBuildings.findIndex(b => b.id === updatedBuilding.id)
       newBuildings.splice(i, 1, updatedBuilding)
-      this.setState({ buildings: newBuildings, selected: updatedBuilding, current_user: updatedUser})
+
+      this.setState({
+          buildings: newBuildings, 
+          selected: updatedBuilding, 
+          current_user: data.user
+        })
     })
   }
 
@@ -338,7 +341,7 @@ class App extends Component {
   }
 
   render() {
-    console.log("App rendering...", this.state.current_user.username)
+    console.log("App render w/ user: ", this.state.current_user)
 
     if (window.sessionStorage.accessToken && this.state.current_user.username) {
       console.log("LOGGED IN")
@@ -350,7 +353,7 @@ class App extends Component {
           <ActionBar current_user={this.state.current_user} logout={this.logoutUser} renderFavoriteInfo={this.renderFavoriteInfo}/>
           <Map buildings={this.state.buildings} range={this.state.range} center={this.state.center} selected={this.state.selected} setSelected={this.setSelected} clearSelected={this.clearSelected} />
 
-          <Route path="/building" render={(windowProps) => <BuildingDataContainer building={this.selected()} windowProps={windowProps} addPhoto={this.addPhoto} addCommentHandler={this.addCommentHandler} current_user={this.state.current_user} followHandler={this.followHandler} unfollowHandler={this.unfollowHandler}/>} />
+          <Route path="/building" render={(windowProps) => <BuildingDataContainer building={this.state.selected} windowProps={windowProps} addPhoto={this.addPhoto} addCommentHandler={this.addCommentHandler} current_user={this.state.current_user} followHandler={this.followHandler} unfollowHandler={this.unfollowHandler}/>} />
         </div>
       )
     } else {
@@ -363,7 +366,7 @@ class App extends Component {
           <Slider range={this.state.range} updateRange={this.updateRange} />
           <Map buildings={this.state.buildings} range={this.state.range} center={this.state.center} selected={this.state.selected} setSelected={this.setSelected} clearSelected={this.clearSelected} />
           <Route path="/login" render={() => <LoginForm login={this.loginUser}/>} />
-          <Route path="/signup" render={() => <SignUpForm />} />
+          <Route path="/signup" render={() => <SignUpForm signup={this.signup}/>} />
         </div>
       )
     }
