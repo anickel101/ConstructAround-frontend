@@ -7,12 +7,29 @@ import '../App.css';
 class PermitCard extends React.Component {
 
     render() {
+        console.log("PermitCard props: ", this.props)
         return (
             <Card className="permit-card pb-2">
                 <Card.Body>
                     <Card.Title>Permit Number: {this.props.permit.sign_number}</Card.Title>
-                    <Card.Text className="mb-2 text-muted">
+                    <Card.Text className="text-muted">
                         <Container>
+                            <Row>
+                                <Col xs={3}>
+                                    To: 
+                                </Col>
+                                <Col >
+                                    {this.props.permit.contractor.name}
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={3}>
+                                    Business:
+                                </Col>
+                                <Col>
+                                    {this.props.permit.contractor.business}
+                                </Col>
+                            </Row>
                             <Row>
                                 <Col>
                                     Status: {this.props.permit.permit_status}

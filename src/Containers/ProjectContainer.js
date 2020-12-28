@@ -9,7 +9,7 @@ import Avatar from 'react-avatar';
 class ProjectContainer extends React.Component {
 
     renderProjectCards = () => {
-        return this.props.building.projects.map((project) => <ProjectCard key={project.id} project={project} />)
+        return this.props.building.projects.map((project) => <ProjectCard key={project.id} project={project} close={true}/>)
     }
 
     render() {

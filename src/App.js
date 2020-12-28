@@ -20,7 +20,7 @@ class App extends Component {
 
   state = {
     buildings: [],
-    range: 400,
+    range: 200,
     center: {
       lat: 40.665889,
       lng: -73.983694
@@ -50,7 +50,8 @@ class App extends Component {
 
   logoutUser = () => {
     window.sessionStorage.clear()
-    this.setState({ current_user: {}, selected: null, buildings: [] });
+    this.setState({ current_user: {}, selected: null, buildings: [], range: 200 });
+    this.props.history.push("/")
   };
 
   loginUser = ({ username, password }) => {
@@ -178,6 +179,7 @@ class App extends Component {
 
           if (fav) {
             let selected = data.find(b => b.id === fav.building_id)
+            this.props.history.push("/")
             this.setState({
               buildings: data,
               center: {
@@ -342,6 +344,7 @@ class App extends Component {
 
   render() {
     console.log("App render w/ user: ", this.state.current_user)
+    console.log("App render w/ buildings: ", this.state.buildings)
 
     if (window.sessionStorage.accessToken && this.state.current_user.username) {
       console.log("LOGGED IN")

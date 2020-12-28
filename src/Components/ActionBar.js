@@ -72,7 +72,7 @@ class ActionBar extends React.Component {
                     </Row>
                     <Row>
                         <Col className="text-center mb-2">
-                            {this.props.current_user.first_name}!
+                            {this.props.current_user.first_name ? `${this.props.current_user.first_name}` : null}
                         </Col>
                     </Row>
                     <Row >

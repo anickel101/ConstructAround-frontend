@@ -20,6 +20,30 @@ class ProjectCard extends React.Component {
         }
     }
 
+    // this.props.project.stakeholders.find(s => s.id === this.props.current_user.id)
+
+    projectInfoButtons = () => {
+            return (
+                <Col xs={10}>
+                <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/permits`}>
+                    <Button className="ml-2" size="sm" variant="secondary">Permits</Button>
+                </Link>
+
+                <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/photos`}>
+                    <Button className="ml-2" size="sm" variant="secondary">Photos</Button>
+                </Link>
+
+                <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/comments`}>
+                    <Button className="ml-2" size="sm" variant="secondary">Comments</Button>
+                </Link>
+
+                <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/stakeholders`}>
+                    <Button className="ml-2" size="sm" variant="secondary">Stakeholders</Button>
+                </Link>
+                </Col>
+            )
+    }
+
     unfollowHandler = () => {
         let follow = this.props.current_user.user_projects.find(up => up.project_id === this.props.project.id)
         console.log("At ProjectCard, followId = ", follow)
@@ -43,23 +67,7 @@ class ProjectCard extends React.Component {
             return (
                 <React.Fragment>
                     <Row>
-                        <Col xs={10}>
-                            <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/permits`}>
-                                <Button className="ml-2" size="sm" variant="secondary">Permits</Button>
-                            </Link>
-
-                            <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/photos`}>
-                                <Button className="ml-2" size="sm" variant="secondary">Photos</Button>
-                            </Link>
-
-                            <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/comments`}>
-                                <Button className="ml-2" size="sm" variant="secondary">Comments</Button>
-                            </Link>
-
-                            <Link to={`/building/${this.props.project.building_id}/projects/${this.props.project.id}/stakeholders`}>
-                                <Button className="ml-2" size="sm" variant="secondary">Stakeholders</Button>
-                            </Link>
-                        </Col>
+                        {this.projectInfoButtons()}
                         <Col className="text-right">
                             {this.followButtonHandler()}
                         </Col>
@@ -94,7 +102,7 @@ class ProjectCard extends React.Component {
                                     Job Number: {this.props.project.job_num}
                                 </Col>
                                 <Col className="text-right">
-                                    {this.closeButton()}
+                                    {this.props.close ? null : this.closeButton()}
                                 </Col>
                             </Row></Card.Title>
                         <Card.Text className="mb-2 text-muted">
